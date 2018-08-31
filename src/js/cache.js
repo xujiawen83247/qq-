@@ -18,6 +18,13 @@ function insertArray(arr, val, compare, maxLen) { //新数据插入函数，新�
     }
 }
 
+function deleteFormArray(arr, compare) { //删除数据
+    const index = arr.findIndex(compare)
+    if (index > -1) {
+        arr.splice(index, 1)
+    }
+}
+
 export function saveSearch(query) {
     let searches = storage.get(SEARCH_KEY, []) //获取当前的储存列表，如果没有为空数组
     insertArray(searches, query, (item) => {
@@ -29,4 +36,18 @@ export function saveSearch(query) {
 
 export function loadSearch() {
     return storage.get(SEARCH_KEY, [])
+}
+
+export function deleteSearch(query) {
+    const searches = storage.get(SEARCH_KEY, [])
+    deleteFormArray(searches, (item) => {
+        return item === query
+    })
+    storage.set(SEARCH_KEY, searches)
+    return searches
+}
+
+export function clearSearch() { //清空
+    storage.remove(SEARCH_KEY)
+    return []
 }

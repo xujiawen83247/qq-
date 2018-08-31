@@ -7,15 +7,23 @@
 			<div class="shortcut">
 				<div class="hot-key">
 					<h3>热门搜索</h3>
-					<ul>
-						<li v-for="(hotkey,index) in hotKey" :key="index" @click="addQuery(hotkey.k)">{{hotkey.k}}</li>
+					<ul class="hot-key-list">
+						<li class="hot-key-item" v-for="(hotkey,index) in hotKey" :key="index" @click="addQuery(hotkey.k)">{{hotkey.k}}</li>
 					</ul>
+				</div>
+				<div class="search-history" v-show="searchHistory.length">
+					<h3 class="search-history-title">
+						<span>搜索历史</span>
+						<i class="iconfont icon-shanchu" @click="clearAll"></i>
+					</h3>
+					<search-list :searches="searchHistory" @select="addQuery" @deleteOne="deleteOne"></search-list>
 				</div>
 			</div>
 		</div>
 		<div class="search-result" v-show="query">
 			<suggest @select="saveSearch" :query="query" @listScroll="blurInput"></suggest>
 		</div>
+		<confirm ref="confirm" text="是否清空所有搜索历史记录" confirmBtnText="清空" @confirm="clearSearchHistory"></confirm>
 		<router-view></router-view>
     </div>
 </template>
@@ -25,7 +33,10 @@
 	import Suggest from '@/views/suggest/suggest'
 	import {getHotKey} from '@/api/search'
 	import {ERR_OK} from '@/api/config'
-	import {mapActions} from 'vuex'
+	import {mapActions, mapGetters} from 'vuex'
+	import SearchList from '@/views/search-list/search-list'
+	import confirm from '@/base/confirm/confirm'
+
 	export default {
 		data() {
 			return {
@@ -36,9 +47,21 @@
 		created() {
 			this._getHotKey()
 		},
+		computed: {
+			...mapGetters([
+				'searchHistory',
+			])
+		},
 		methods: {
 			addQuery(query) {
 				this.$refs.searchBox.setQuery(query) 
+			},
+			deleteOne(item) {
+				this.deleteSearchHistory(item)
+			},
+			clearAll() {
+				// this.clearSearchHistory()
+				this.$refs.confirm.show()
 			},
 			_getHotKey() {
 				getHotKey().then((res) => {
@@ -59,11 +82,15 @@
 			},
 			...mapActions([
 				'saveSearchHistory',
+				'deleteSearchHistory',
+				'clearSearchHistory',
 			])
 		},
 		components: {
 			SearchBox,
 			Suggest,
+			SearchList,
+			confirm,
 		},
 	}
 </script>
@@ -87,11 +114,11 @@
 				color: #808080;
 				font-weight: 400;
 			}
-			ul {
+			.hot-key-list {
 				display: flex;
 				flex-direction: row;
 				flex-wrap: wrap;
-				li {
+				.hot-key-item {
 					border: 1px solid #969696;
 					border-radius: 40px;
 					margin-top: 10px;
@@ -103,6 +130,19 @@
 					&:nth-of-type(1) {
 						border: 1px solid #31c37c;
 						color: #31c37c;
+					}
+				}
+			}
+			.search-history {
+				margin-top: 50px;
+				.search-history-title {
+					display: flex;
+					flex-direction: row;
+					span {
+						flex: 1;
+					}
+					.icon-shanchu {
+						font-size: 40px;
 					}
 				}
 			}

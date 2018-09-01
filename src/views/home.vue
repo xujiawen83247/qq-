@@ -108,14 +108,10 @@ export default {
 
 <style lang="less" scoped>
 	.recommend {
-		position: relative;
-		left: 0;
-		right: 0;
-		top: 0;
-		bottom: 0;
-	}
-	.nodWrapper {
-		
+		position: fixed;
+        top: 62vw;
+        bottom: 0;
+        overflow: hidden;
 	}
     .mod {
         padding: 0 26px;
@@ -156,10 +152,7 @@ export default {
         }
     }
     .scroll {
-        position: relative;
-		
-        height: 70vh;
-        overflow: hidden;
+        height: 100%;
         .loading {
             position: absolute;
             left: 100%;

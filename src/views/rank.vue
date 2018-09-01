@@ -4,7 +4,7 @@
 			<div>
 				<h3 class="title">QQ音乐巅峰榜</h3>
 				<ul class="rank-list">
-					<li class="rank-item" v-for="(item,index) in toplist" :key="item.id" @click="selectItem(item)">
+					<li class="rank-item" v-for="(item,index) in toplist" :key="index" @click="selectItem(item)">
 						<div class="item-left">
 							<img class="bg" :src="item.picUrl"/>
 							<div class="i-num">
@@ -87,8 +87,10 @@
 
 <style lang="less" scoped>
     .rank {
-        position: relative;
-        height: 88.5vh;
+        position: fixed;
+        top: 20.371vw;
+        bottom: 0;
+        width: 100%;
         overflow: hidden;
         background: #f4f4f4;
 		

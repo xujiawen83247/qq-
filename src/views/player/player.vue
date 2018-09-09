@@ -90,12 +90,13 @@
 						<i class="fa miniPlayIcon ignore" :class="miniPlayingIcon" ref="miniPlay"></i>
 					</progress-circle>
 				</div>
-				<div class="control">
+				<div class="control" @click.stop="showPlayList">
 					<i class="fa fa-list"></i>
 				</div>
 				<audio ref="audio" :src="currentSong.url" @canplay="ready" @error="error" @timeupdate="updataTime" @ended="end"></audio>
 			</div>
 		</transition>
+		<play-list ref="playlist"></play-list>
 	</div>
 </template>
 
@@ -108,6 +109,8 @@
 	import Scroll from '@/base/scroll/scroll'
 	import progressBar from '@/base/progress-bar/progress-bar'
 	import progressCircle from '@/base/progress-circle/progress-circle'
+	import PlayList from '@/views/playlist/playlist'
+
 	export default {
 		data() {
 			return {
@@ -372,6 +375,9 @@
 				this.$refs.middleL.style.opacity = opacity
 				this.$refs.middleL.style.transition = 300 + 'ms'
 			},
+			showPlayList() {	//mini播放器歌曲列表
+				this.$refs.playlist.show()
+			},
 			_pod(num, n = 2) {	//个位数时补0
 				let len = num.toString().length
 				while (len < n) {
@@ -401,6 +407,9 @@
 		},
 		watch: {
 			currentSong(newSong, odlSong) {
+				if (!newSong.id) {
+					return
+				}
 				if (newSong.id === odlSong.id) {
 					return
 				}
@@ -424,6 +433,7 @@
 			progressBar,
 			progressCircle,
 			Scroll,
+			PlayList,
 		}
 	}
 </script>

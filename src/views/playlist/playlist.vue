@@ -6,12 +6,12 @@
                     <h3 class="title">
                         <i class="iconfont icon-shunxubofang"></i>
                         <span class="text">顺序播放</span>
-                        <span class="clear"><i class="iconfont icon-shanchu"></i></span>
+                        <span class="clear" @click="showConfirm"><i class="iconfont icon-shanchu"></i></span>
                     </h3>
                 </div>
                 <scroll class="list-content" ref="listContent" :data="sequenceList">
-                    <ul>
-                        <li class="item" ref="listItem" v-for="(item,index) in sequenceList" :key="index" @click="selectItem(item, index)">
+                    <transition-group name="list" tag="ul">
+                        <li class="item" ref="listItem" v-for="(item,index) in sequenceList" :key="item.id" @click="selectItem(item, index)">
                             <span class="text" :class="getCurren(item)">
                                 {{item.name}}
                                 <i class="current" :class="getCurrentIcon(item)"></i>
@@ -20,7 +20,7 @@
                             <span class="clear" @click.stop="deleteOne(item)"><i class="iconfont icon-shanchu"></i></span>
                         </li>
                         
-                    </ul>
+                    </transition-group>
                 </scroll>
                 <div class="list-operate">
                     <div class="add">
@@ -32,6 +32,7 @@
                     <span>关闭</span>
                 </div>
             </div>
+            <confirm ref="confirm" text="是否清空播放列表" confirmBtnText="清空" @confirm="confirmClear"></confirm>
         </div>
     </transition>
 </template>
@@ -40,6 +41,7 @@
     import {mapGetters, mapMutations, mapActions} from 'vuex'
     import {playMode} from '@/js/config'
     import Scroll from '@/base/scroll/scroll'
+    import Confirm from '@/base/confirm/confirm'
 
     export default {
         data() {
@@ -101,12 +103,20 @@
                     this.hide()
                 }
             },
+            showConfirm() {
+                this.$refs.confirm.show()
+            },
+            confirmClear() {
+                this.deleteSongList()
+                this.hide()
+            },
             ...mapMutations({
                 setCurrentIndex: 'SET_CURRENT_INDEX',
                 setPlayingState: 'SET_PLAYING_STATE'
             }),
             ...mapActions([
-                'deleteSong'
+                'deleteSong',
+                'deleteSongList'
             ])
         },
         watch: {
@@ -120,6 +130,7 @@
         },
         components: {
             Scroll,
+            Confirm,
         }
     }
 </script>
@@ -133,13 +144,13 @@
         bottom: 0;
         z-index: 100;
         background: rgba(0, 0, 0, 0.3);
-        &.list-fade-enter-active, &list-fade-leave-active {
+        &.list-fade-enter-active, &.list-fade-leave-active {
             transition: opacity 0.3s;
             .list-wrapper {
                 transition: 0.3s;
             }
         }
-        &.list-fade-enter, &list-fade-leave-to {
+        &.list-fade-enter, &.list-fade-leave-to {
             opacity: 0;
             .list-wrapper {
                 transform: translate3d(0, 100%, 0)
@@ -174,7 +185,14 @@
                 max-height: 930px;
                 overflow: hidden;
                 background: rgba( 26, 33, 43, 0.9);
+                
                 .item {
+                    &.list-enter-active, &.list-leave-active {
+                        transition: 0.1s linear;
+                    }
+                    &.list-enter, &.list-leave-to {
+                        height: 0;
+                    }
                     display: flex;
                     align-items: center;
                     border-top: 1px solid #ccc;
@@ -227,5 +245,6 @@
             }
         }
     }
+    
 </style>
 

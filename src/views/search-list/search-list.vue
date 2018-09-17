@@ -1,11 +1,11 @@
 <template>
     <div class="search-list" v-show="searches.length">
-        <ul class="search-history-list">
+        <transition-group tag="ul" name="list" class="search-history-list">
             <li class="search-history-item" v-for="(item, index) in searches" :key="index" @click="selectItem(item)">
                 <span>{{item}}</span>
                 <i class="iconfont icon-chuyidong" @click.stop="deleteOne(item)"></i>
             </li>
-        </ul>
+        </transition-group>
     </div>
 </template>
 
@@ -38,6 +38,12 @@
             flex-direction: row;
             height: 100px;
             line-height: 100px;
+            &.list-enter-active, &.list-leave-active {
+                transition: all 0.1s;
+            }
+            &.list-enter, &.list-leave-to {
+                height: 0;
+            }
             span {
                 flex: 1;
             }

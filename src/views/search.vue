@@ -35,18 +35,18 @@
 	import Suggest from '@/views/suggest/suggest'
 	import {getHotKey} from '@/api/search'
 	import {ERR_OK} from '@/api/config'
-	import {mapActions, mapGetters} from 'vuex'
+	import {mapActions} from 'vuex'
 	import SearchList from '@/views/search-list/search-list'
 	import confirm from '@/base/confirm/confirm'
 	import Scroll from '@/base/scroll/scroll'
-	import {playlistMixin} from '@/js/mixin'
+	import {playlistMixin, searchMixin} from '@/js/mixin'
 
 	export default {
-		mixins: [playlistMixin],
+		mixins: [playlistMixin, searchMixin],
 		data() {
 			return {
 				hotKey: [],
-				query: '',
+				
 			}
 		},
 		created() {
@@ -56,21 +56,18 @@
 			shortcut() {
 				return this.hotKey.concat(this.searchHistory)
 			},
-			...mapGetters([
-				'searchHistory',
-			])
+			
 		},
 		methods: {
 			handlePlaylist(playlist) {
 				const bottom = playlist.length ? '14vw' : ''
 				this.$refs.shortcutWrapper.style.bottom = bottom
+
 				this.$refs.shortcut.refresh()
 				this.$refs.searchRes.style.bottom = bottom
 				this.$refs.suggest.refresh()
 			},
-			addQuery(query) {
-				this.$refs.searchBox.setQuery(query) 
-			},
+			
 			deleteOne(item) {
 				this.deleteSearchHistory(item)
 			},
@@ -86,18 +83,9 @@
 					}
 				})
 			},
-			onQueryChange(query) {
-				this.query = query
-			},
-			blurInput () {
-				this.$refs.searchBox.blur()
-			},
-			saveSearch() {
-				this.saveSearchHistory(this.query)
-			},
+			
 			...mapActions([
-				'saveSearchHistory',
-				'deleteSearchHistory',
+				
 				'clearSearchHistory',
 			])
 		},
@@ -188,6 +176,7 @@
 		}
 		.search-result {
 			position: relative;
+
 			height: 80vh;
 			padding: 0 40px;
 			background: #fff;

@@ -58,7 +58,7 @@
 					</div>
 					<div class="operators">
 						<div class="icon i-left" @click="changeMode">
-							<i class="fa" :class="iconMode"></i>
+							<i class="iconfont" :class="iconMode"></i>
 						</div>
 						<div class="icon i-left">
 							<i class="fa fa-step-backward" @click="prev"></i>
@@ -101,17 +101,19 @@
 </template>
 
 <script>
-	import {mapGetters, mapMutations} from 'vuex'
-	import {playMode} from '@/js/config'
-	import {shuffle} from '@/js/util'
+	import {mapGetters, mapMutations, mapActions} from 'vuex'
+	import { playMode } from '@/js/config'
+	
 	import animations from 'create-keyframe-animation'
 	import Lyric from 'lyric-parser'
 	import Scroll from '@/base/scroll/scroll'
 	import progressBar from '@/base/progress-bar/progress-bar'
 	import progressCircle from '@/base/progress-circle/progress-circle'
 	import PlayList from '@/views/playlist/playlist'
+	import {playerMixin} from '@/js/mixin'
 
 	export default {
+		mixins: [playerMixin],
 		data() {
 			return {
 				songReady: false,
@@ -137,17 +139,13 @@
 			percent() {
 				return this.currentTime / this.currentSong.duration
 			},
-			iconMode() {
-				return this.mode === playMode.sequence ? 'fa-list-ol' : this.mode === playMode.loop ? 'fa-exchange' : 'fa-random'
-			},
+			
 			...mapGetters([
 				'fullScreen',
-				'playlist',
-				'currentSong',
+				
 				'playing',
 				'currentIndex',
-				'mode',
-				'sequenceList',
+				
 			])
 		},
 		created() {
@@ -261,6 +259,7 @@
 			},
 			ready() {	//歌曲url加载完成
 				this.songReady = true
+				this.savePlayHistory(this.currentSong)
 			},
 			error() {
 				this.songReady = true
@@ -284,24 +283,7 @@
 					this.currentLyric.seek(currentTime * 1000)
 				}
 			},
-			changeMode() {
-				const mode = (this.mode + 1) % 3
-				let list = null
-				this.setPlayMode(mode)
-				if (mode === playMode.random) {
-					list = shuffle(this.sequenceList)
-				}else {
-					list = this.sequenceList
-				}
-				this.resetCurrentIndex(list)
-				this.setPlayList(list)
-			},
-			resetCurrentIndex(list) {
-				let index = list.findIndex((item) => {
-					return item.id === this.currentSong.id
-				})
-				return index
-			},
+			
 			getLyric() {
 				this.currentSong.getLyric().then((lyric) => {
 					this.currentLyric = new Lyric(lyric, this.handleLyric)
@@ -399,11 +381,11 @@
 			},
 			...mapMutations({
 				setFullScreen: 'SET_FULL_SCREEN',
-				setPlayingState: 'SET_PLAYING_STATE',
-				setCurrentIndex: 'SET_CURRENT_INDEX',
-				setPlayMode: 'SET_PLAY_MODE',
-				setPlayList: 'SET_PLAYLIST',
-			})
+				
+			}),
+			...mapActions([
+				'savePlayHistory'
+			])
 		},
 		watch: {
 			currentSong(newSong, odlSong) {
@@ -442,6 +424,7 @@
 	.player {
 		color: #fff;
 		.normal-player {
+			
 			position: fixed;
 			top: 0;
 			bottom: 0;

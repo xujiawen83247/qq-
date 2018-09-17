@@ -13,7 +13,7 @@
 					<i class="iconfont" :class="getIconCls(item)"></i>
 				</div>
 				<div class="info">
-					<p class="singer" v-html="getDisplayName(item)">歌曲</p>
+					<p class="singer" v-html="getDisplayName(item)"></p>
 				</div>
 			</li>
 			<loading v-show="hasMore" title=""></loading>
@@ -175,6 +175,7 @@
 				padding-top: 10px;
 				padding-bottom: 20px;
 				background: #fff;
+				
 				.icon {
 					flex: 0 0 30px;
 					width: 100px;
@@ -187,9 +188,14 @@
 				.info {
 					flex: 1;
 					overflow: hidden;
+					
 					.singer {
 						font-size: 40px;
 						color: #000;
+						
+						white-space: nowrap;
+						overflow: hidden;
+						text-overflow: ellipsis;
 					}
 					.name {
 						font-size: 16px;

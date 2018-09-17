@@ -102,7 +102,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
     .singer {
         position: absolute;
         top: 220px;

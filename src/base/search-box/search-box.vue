@@ -64,6 +64,7 @@
 		}
 		.ishanchu {
 			font-size: 60px;
+			color: #c8c8c8;
 		}
 	}
 </style>

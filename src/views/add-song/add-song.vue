@@ -13,12 +13,12 @@
             <div class="shortcut" v-show="!query">
                 <switches :currentIndex="currentIndex" :switches="switches" @switches="switchesItem"></switches>
                 <div class="list-wrapper">
-                    <scroll ref="songList" class="list-scroll" v-if="currentIndex === 0" :data="playHistory">
+                    <scroll ref="songList" class="list-scroll" v-if="currentIndex === 0" :data="playHistory" :refreshDelay="refreshDelay">
                         <div class="list-inner">
                             <song-list :songs="playHistory" @select="selectSong"></song-list>
                         </div>
                     </scroll>
-                    <scroll ref="searchList" class="list-scroll" v-if="currentIndex === 1" :data="searchHistory">
+                    <scroll ref="searchList" class="list-scroll" v-if="currentIndex === 1" :data="searchHistory" :refreshDelay="refreshDelay">
                         <div class="list-inner">
                             <search-list @deleteOne="deleteSearchHistory" @select="addQuery" :searches="searchHistory"></search-list>
                         </div>
@@ -28,6 +28,12 @@
             <div class="search-result" v-show="query">
                 <suggest :query="query" :showSinger="showSinger" @select="selectSuggest" @listScroll="blurInput"></suggest>
             </div>
+            <top-tip ref="topTip">
+                <div class="top-title">
+                    <i class="iconfont icon-ic_join_dialing_norm"></i>
+                    <span class="text">1首歌曲添加到队列</span>
+                </div>
+            </top-tip>
         </div>
     </transition>    
 </template>
@@ -39,9 +45,11 @@
     import Scroll from '@/base/scroll/scroll'
     import SongList from '@/base/song-list/song-list'
     import SearchList from '@/views/search-list/search-list'
+    import TopTip from '@/base/top-tip/top-tip'
     import {searchMixin} from '@/js/mixin'
     import {mapGetters, mapActions} from 'vuex'
     import Song from '@/js/song'
+   
 
     export default {
         mixins: [searchMixin],
@@ -54,7 +62,7 @@
                 switches: [
                     {name: '最近播放'},
                     {name: '搜索历史'}
-                ]
+                ],
             }
         },
         computed: {
@@ -77,18 +85,19 @@
             hide() {
                 this.showFlag = false
             },
-            search(query) {
-                this.query = query
-            },
+            
             selectSuggest() {
                 this.saveSearch()
+                this.$refs.topTip.show() 
             },
             switchesItem(index) {
                 this.currentIndex = index
+                
             },
             selectSong(song, index) {
-                if (index != 0) {
+                if (index !== 0) {
                     this.inserSong( new Song(song) )
+                    this.$refs.topTip.show()
                 }
             },
             ...mapActions([
@@ -101,7 +110,8 @@
             switches,
             Scroll,
             SongList,
-            SearchList
+            SearchList,
+            TopTip
         }
     }
 </script>
@@ -124,6 +134,7 @@
             position: relative;
             height: 100px;
             text-align: center;
+            z-index: 30;
             .title {
                 line-height: 100px;
                 font-size: 50px;
@@ -165,5 +176,12 @@
             bottom: 0;
             width: 100%;
         }
+       .top-title {
+            padding:  24px 0;
+            font-size: 40px;
+            .icon-ic_join_dialing_norm {
+                font-size: 40px;
+            }
+        } 
     }
 </style>

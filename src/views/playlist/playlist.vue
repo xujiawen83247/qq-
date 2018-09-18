@@ -9,7 +9,7 @@
                         <span class="clear" @click="showConfirm"><i class="iconfont icon-shanchu"></i></span>
                     </h3>
                 </div>
-                <scroll class="list-content" ref="listContent" :data="sequenceList">
+                <scroll class="list-content" ref="listContent" :data="sequenceList" :refreshDelay="refreshDelay">
                     <transition-group name="list" tag="ul">
                         <li class="item" ref="listItem" v-for="(item,index) in sequenceList" :key="item.id" @click="selectItem(item, index)">
                             <span class="text" :class="getCurren(item)">
@@ -51,6 +51,7 @@
         data() {
             return {
                 showFlag: false,
+                refreshDelay: 100
             }
         },
         computed: {

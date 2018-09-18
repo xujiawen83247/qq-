@@ -1,7 +1,7 @@
 <template>
 	<div class="songs-list">
 		<ul>
-			<li v-for="(song, index) in items" class="item" :key="index" @click="selectItem(song, index)">
+			<li v-for="(song, index) in songs" class="item" :key="index" @click="selectItem(song, index)">
 				<div class="num" :class="getRankCls(index)" v-show="rank">{{getRankText(index)}}</div>
 				<div class="desc">
 					<h3>{{song.name}}</h3>
@@ -29,12 +29,12 @@
 				default: false,
 			}
 		},
-		watch: {
-			songs() {	
-				this.items = this.songs
-				// console.log(this.items)
-			}
-		},
+		// watch: {
+		// 	songs() {	
+		// 		this.items = this.songs
+		// 		// console.log(this.items)
+		// 	}
+		// },
 		methods: {
 			selectItem(song, index) {
 				this.$emit('select', song, index)

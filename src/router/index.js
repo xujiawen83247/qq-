@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 
+import UserCenter from '@/views/user-center/user-center'
 import home from '@/views/home'
 import rank from '@/views/rank'
 import search from '@/views/search'
@@ -33,23 +34,19 @@ export default new Router({
             path: '/rank',
             name: 'Rank',
             component: rank,
-			children: [
-				{
-					path: ':id',
-					component: TopList
-				},
-			]
+            children: [{
+                path: ':id',
+                component: TopList
+            }, ]
         },
         {
             path: '/search',
             name: 'Search',
             component: search,
-			children: [
-				{
-					path: ':id',
-					component: singerDetail
-				}
-			]
+            children: [{
+                path: ':id',
+                component: singerDetail
+            }]
         },
         {
             path: '/songsList',
@@ -68,6 +65,11 @@ export default new Router({
                 path: ':id',
                 component: singerDetail
             }]
+        },
+        {
+            path: '/UserCenter',
+            name: 'User',
+            component: UserCenter
         }
     ]
 })

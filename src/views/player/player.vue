@@ -70,7 +70,7 @@
 							<i class="fa fa-step-forward" @click="next"></i> 
 						</div>
 						<div class="icon i-right">
-							<i class="fa fa-heart-o"></i>
+							<i class="iconfont" :class="getFavorite(currentSong)" @click="toggleFavorite(currentSong)"></i>
 						</div>
 					</div>
 				</div>

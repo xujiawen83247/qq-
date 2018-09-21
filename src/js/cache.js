@@ -1,11 +1,14 @@
 //
 import storage from 'good-storage'
 
-const SEARCH_KEY = '__search__'
-const SEARCH_MAX_LENGTH = 30 //最大储存条数
+const SEARCH_KEY = '__search__' //搜索历史列表
+const SEARCH_MAX_LENGTH = 15 //最大储存条数
 
-const PLAY_KEY = '__play__'
+const PLAY_KEY = '__play__' //播放历史列表
 const PLAY_MAX_LENGTH = 200
+
+const FAVORITE_KEY = '__favorite__' //收藏列表
+const FAVORITE_MAX_LENGTH = 200
 
 function insertArray(arr, val, compare, maxLen) { //新数据插入函数，新数据插入到数组的第一个，如果数组中有同样的把原数据删除后插入到第一个
     const index = arr.findIndex(compare) //查找数组中是否有传入的数据，返回该数据的下标,compare是一个函数
@@ -66,4 +69,26 @@ export function savePlay(song) {
 
 export function loadPlay() {
     return storage.get(PLAY_KEY, [])
+}
+
+export function saveFavorite(song) {
+    let songs = storage.get(FAVORITE_KEY, [])
+    insertArray(songs, song, (item) => {
+        return song.id === item.id
+    }, FAVORITE_MAX_LENGTH)
+    storage.set(FAVORITE_KEY, songs)
+    return songs
+}
+
+export function deleteFavorite(song) {
+    let songs = storage.get(FAVORITE_KEY, [])
+    deleteFormArray(songs, (item) => {
+        return song.id === item.id
+    })
+    storage.set(FAVORITE_KEY, songs)
+    return songs
+}
+
+export function loadFavorite() {
+    return storage.get(FAVORITE_KEY, [])
 }

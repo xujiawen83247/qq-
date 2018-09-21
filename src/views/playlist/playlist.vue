@@ -16,7 +16,7 @@
                                 {{item.name}}
                                 <i class="current" :class="getCurrentIcon(item)"></i>
                             </span>
-                            
+                            <i class="iconfont iconfont2" :class="getFavorite(item)" @click.stop="toggleFavorite(item)"></i>
                             <span class="clear" @click.stop="deleteOne(item)"><i class="iconfont icon-shanchu"></i></span>
                         </li>
                         
@@ -206,6 +206,10 @@
                     }
                     .iconfont {
                         font-size: 50px;
+                    }
+                    .iconfont2 {
+                        margin-right: 20px;
+                        font-size: 40px;
                     }
                 }
                 .current, {

@@ -2,7 +2,10 @@
   <div id="app">
     <div class="header">
       <img src="./assets/logo.png" class="logo" />
-      <a href="javascript:;" class="down">下载APP</a>
+      <!-- <a href="javascript:;" class="down">下载APP</a> -->
+      <router-link :to="{name: 'User'}" class="mine" tag="div">
+        <i class="iconfont icon-yonghu"></i>
+      </router-link>
     </div>
     <div class="nav">
       <router-link :to="{name: 'Home'}" class="nav-link" >推荐</router-link>
@@ -60,6 +63,13 @@ html,body,#app {
     font: 34px/74px "微软雅黑";
     text-align: center;
     color: #fff;
+  }
+  .mine {
+    float: right;
+    margin-top: 14px;
+    .icon-yonghu {
+      font-size: 80px;
+    }
   }
 }
 .nav {

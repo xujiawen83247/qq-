@@ -56,10 +56,10 @@
         },
 		methods: {
 			handlePlaylist(playlist) {
-				// const bottom = playlist.length ? '15vw' : ''
-				const height = playlist.length ? '81vh' : ''
-				// this.$refs.rank.style.bottom = bottom
-				this.$refs.rank.style.height = height
+				const bottom = playlist.length ? '14vw' : ''
+				// const height = playlist.length ? '81vh' : ''
+				this.$refs.rank.style.bottom = bottom
+				// this.$refs.rank.style.height = height
 				this.$refs.toplist.refresh()
 			},
 			_getTopList() {

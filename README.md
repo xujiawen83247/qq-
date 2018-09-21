@@ -1,6 +1,6 @@
 # qq-music
 
-> A Vue.js project
+> 慕课网qq音乐，更新了一些课程中过期的接口
 
 ## Build Setup
 

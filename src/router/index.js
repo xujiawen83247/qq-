@@ -13,6 +13,61 @@ import singer from '@/views/singer/singer'
 import singerDetail from '@/views/singer-detail/singer-detail'
 import disc from '@/views/disc/disc'
 import TopList from '@/views/top-list/top-list'
+
+// const home = (resolve) => {
+//     import ('@/views/home').then((module) => {
+//         resolve(module)
+//     })
+// }
+
+// const rank = (resolve) => {
+//     import ('@/views/rank').then((module) => {
+//         resolve(module)
+//     })
+// }
+
+// const search = (resolve) => {
+//     import ('@/views/search').then((module) => {
+//         resolve(module)
+//     })
+// }
+
+// const songsList = (resolve) => {
+//     import ('@/views/songsList/songsList').then((module) => {
+//         resolve(module)
+//     })
+// }
+
+// const loading = (resolve) => {
+//     import ('@/components/loading').then((module) => {
+//         resolve(module)
+//     })
+// }
+
+// const singer = (resolve) => {
+//     import ('@/views/singer/singer').then((module) => {
+//         resolve(module)
+//     })
+// }
+
+// const singerDetail = (resolve) => {
+//     import ('@/views/singer-detail/singer-detail').then((module) => {
+//         resolve(module)
+//     })
+// }
+
+// const disc = (resolve) => {
+//     import ('@/views/disc/disc').then((module) => {
+//         resolve(module)
+//     })
+// }
+
+// const TopList = (resolve) => {
+//     import ('@/views/top-list/top-list').then((module) => {
+//         resolve(module)
+//     })
+// }
+
 Vue.use(Router)
 
 export default new Router({

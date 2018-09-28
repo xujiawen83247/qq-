@@ -40,7 +40,6 @@ export default {
             currentPageIndex: 0,
         }
     },
-    
     mounted() {
         setTimeout(()=>{
             this._setSliderWidth()
@@ -87,6 +86,7 @@ export default {
                     threshold: 0.3,
                     speed: 400
                 },
+                snapSpeed: 400,
                 bounce: false,
                 stopPropagation: true,
             })
@@ -102,13 +102,13 @@ export default {
             })
         },
         _play() {
+            clearTimeout(this.time)
             let pageIndex = this.currentPageIndex +1 
             // if(this.loop) {
             //     pageIndex += 1
             // }
-            clearTimeout(this.time)
             this.time = setTimeout(()=>{
-                this.slider.goToPage(pageIndex,0,400)
+                this.slider.next()
             },4000)
         }
     },
